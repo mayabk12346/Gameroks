@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @author  Andy Fragen
  */
-class Settings {
+class Settings extends Base {
 	use GHU_Trait;
 
 	/**
@@ -53,17 +53,10 @@ class Settings {
 	];
 
 	/**
-	 * Holds site options.
-	 *
-	 * @var array $options
-	 */
-	private static $options;
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		self::$options = $this->get_class_vars( 'Base', 'options' );
+		parent::__construct();
 		$this->refresh_caches();
 		$this->load_options();
 	}
@@ -84,7 +77,7 @@ class Settings {
 		$this->load_hooks();
 
 		// Need to ensure these classes are activated here for hooks to fire.
-		if ( $this->is_current_page( [ 'options.php', 'options-general.php', 'settings.php', 'edit.php' ] ) ) {
+		if ( $this->is_current_page( [ 'options.php', 'options-general.php', 'settings.php' ] ) ) {
 			Singleton::get_instance( 'Install', $this )->run();
 			Singleton::get_instance( 'Remote_Management', $this )->load_hooks();
 		}
@@ -107,7 +100,6 @@ class Settings {
 		if ( $this->is_current_page( [ 'options.php', 'options-general.php', 'settings.php', 'edit.php' ] ) ) {
 			add_action( 'admin_init', [ $this, 'update_settings' ] );
 			add_action( 'admin_init', [ $this, 'page_init' ] );
-			add_action( 'admin_init', [ Singleton::get_instance( 'Remote_Management', $this ), 'make_json' ] );
 		}
 	}
 
@@ -414,7 +406,7 @@ class Settings {
 	 */
 	public function unset_stale_options( $ghu_options_keys, $ghu_tokens ) {
 		$running_servers = $this->get_running_git_servers();
-		$ghu_unset_keys  = array_diff_key( self::$options, $ghu_options_keys );
+		$ghu_unset_keys  = array_diff_key( static::$options, $ghu_options_keys );
 		$always_unset    = [
 			'db_version',
 			'branch_switch',
@@ -487,9 +479,9 @@ class Settings {
 
 		if ( ! empty( $ghu_unset_keys ) ) {
 			foreach ( $ghu_unset_keys as $key => $value ) {
-				unset( self::$options[ $key ] );
+				unset( static::$options[ $key ] );
 			}
-			update_site_option( 'github_updater', self::$options );
+			update_site_option( 'github_updater', static::$options );
 		}
 	}
 
@@ -578,7 +570,7 @@ class Settings {
 	 * @param array $args
 	 */
 	public function token_callback_text( $args ) {
-		$name = isset( self::$options[ $args['id'] ] ) ? esc_attr( self::$options[ $args['id'] ] ) : '';
+		$name = isset( static::$options[ $args['id'] ] ) ? esc_attr( static::$options[ $args['id'] ] ) : '';
 		$type = isset( $args['token'] ) ? 'password' : 'text';
 		?>
 		<label for="<?php esc_attr( $args['id'] ); ?>">
@@ -593,7 +585,7 @@ class Settings {
 	 * @param array $args
 	 */
 	public function token_callback_checkbox( $args ) {
-		$checked = isset( self::$options[ $args['id'] ] ) ? self::$options[ $args['id'] ] : null;
+		$checked = isset( static::$options[ $args['id'] ] ) ? static::$options[ $args['id'] ] : null;
 		?>
 		<label for="<?php esc_attr_e( $args['id'] ); ?>">
 			<input type="checkbox" id="<?php esc_attr_e( $args['id'] ); ?>" name="github_updater[<?php esc_attr_e( $args['id'] ); ?>]" value="1" <?php checked( '1', $checked ); ?> >
@@ -634,7 +626,7 @@ class Settings {
 	 * @return array|mixed
 	 */
 	private function filter_options() {
-		$options = self::$options;
+		$options = static::$options;
 
 		// Remove checkbox options, only after background update complete.
 		if ( ! $this->waiting_for_background_update() ) {

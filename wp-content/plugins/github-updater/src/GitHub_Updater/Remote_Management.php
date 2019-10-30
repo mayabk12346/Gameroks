@@ -177,12 +177,6 @@ class Remote_Management {
 				<?php submit_button( esc_html__( 'Reset RESTful key', 'github-updater' ) ); ?>
 			</form>
 			<?php
-			$make_json = add_query_arg( [ 'github_updater_make_json_file' => true ], $action );
-			?>
-			<form class="settings no-sub-tabs" method="post" action="<?php esc_attr_e( $make_json ); ?>">
-				<?php submit_button( esc_html__( 'Make JSON file', 'github-updater' ) ); ?>
-			</form>
-			<?php
 		}
 	}
 
@@ -227,35 +221,28 @@ class Remote_Management {
 		}
 		$api_url = add_query_arg(
 			[
-				'key' => self::$api_key,
+				'action' => 'github-updater-update',
+				'key'    => self::$api_key,
 			],
-			home_url( 'wp-json/' . $this->get_class_vars( 'REST_API', 'namespace' ) . '/update/' )
+			admin_url( 'admin-ajax.php' )
 		);
-
-		echo '<p>';
-		printf(
-			wp_kses_post(
-				/* translators: %s: Link to Git Remote Updater repository */
-				__( 'The <a href="%s">Git Remote Updater</a> plugin was specifically created to make the remote management of GitHub Updater supported plugins and themes much simpler.', 'github-updater' )
-			),
-			'https://github.com/afragen/git-remote-updater'
-		);
-		echo '</p>';
-
-		echo '<p>';
+		?>
+		<p>
+			<?php
 			printf(
 				wp_kses_post(
-					/* translators: %1$s: Link to wiki, %2$s: RESTful API URL */
-					__( 'Please refer to the <a href="%1$s">wiki</a> for complete list of attributes. REST API endpoints begin at: %2$s', 'github-updater' )
+					/* translators: %s: Link to wiki */
+					__( 'Please refer to the <a href="%s">wiki</a> for complete list of attributes. RESTful endpoints begin at:', 'github-updater' )
 				),
-				'https://github.com/afragen/github-updater/wiki/Remote-Management---RESTful-Endpoints',
-				'<br><span style="font-family:monospace;">' . $api_url . '</span>'
+				'https://github.com/afragen/github-updater/wiki/Remote-Management---RESTful-Endpoints'
 			);
-		echo '</p>';
-
-		echo '<p>';
-		esc_html_e( 'Use of Remote Management services may result increase some page load speeds only for `admin` level users in the dashboard.', 'github-updater' );
-		echo '</p>';
+			?>
+			<br>
+			<span style="font-family:monospace;"><?php echo $api_url; ?></span>
+		<p>
+			<?php esc_html_e( 'Use of Remote Management services may result increase some page load speeds only for `admin` level users in the dashboard.', 'github-updater' ); ?>
+		</p>
+		<?php
 	}
 
 	/**
@@ -294,46 +281,6 @@ class Remote_Management {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Make JSON file for Git Bulk Updater.
-	 *
-	 * @return void
-	 */
-	public function make_json() {
-		if ( ! isset( $_REQUEST['github_updater_make_json_file'] )
-		) {
-			return;
-		}
-		$site   = $_SERVER['HTTP_HOST'];
-		$origin = $_SERVER['HTTP_ORIGIN'];
-		$json   = [
-			'site' => [
-				'host'                 => $origin,
-				'rest_namespace_route' => $this->get_class_vars( 'REST_API', 'namespace' ) . '/repos/',
-				'rest_api_key'         => self::$api_key,
-			],
-		];
-
-		$json      = json_encode( $json, JSON_FORCE_OBJECT );
-		$file      = str_replace( '.', '-', $site ) . '.json';
-		$file_path = get_temp_dir() . "/{$file}";
-		$file_path = file_put_contents( $file_path, $json ) ? $file_path : false;
-
-		// Quick check to verify that the file exists
-		if ( ! $file_path ) {
-			die( 'File not found' );
-		}
-		// Force the download
-		header( 'Content-Type: application/octet-stream;' );
-		header( 'Content-Disposition: attachment; filename="' . basename( $file ) . '"' );
-		header( 'Expires: 0' );
-		header( 'Cache-Control: must-revalidate' );
-		header( 'Pragma: public' );
-		header( 'Content-Length: ' . filesize( $file_path ) );
-		readfile( $file_path );
-		exit;
 	}
 
 	/**

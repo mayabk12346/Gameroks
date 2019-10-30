@@ -281,11 +281,7 @@ trait GHU_Trait {
 	public function sanitize( $input ) {
 		$new_input = [];
 		foreach ( array_keys( (array) $input ) as $id ) {
-			if ( in_array( $id, array_keys( wp_get_mime_types() ), true ) ) {
-				$new_input[  sanitize_text_field( $id )  ] = sanitize_text_field( $input[ $id ] );
-			} else {
-				$new_input[ sanitize_file_name( $id ) ] = sanitize_text_field( $input[ $id ] );
-			}
+			$new_input[ sanitize_file_name( $id ) ] = sanitize_text_field( $input[ $id ] );
 		}
 
 		return $new_input;
@@ -322,37 +318,6 @@ trait GHU_Trait {
 	}
 
 	/**
-	 * Check to see if wp-cron/background updating has finished.
-	 *
-	 * @param null $repo
-	 *
-	 * @return bool true when waiting for background job to finish.
-	 */
-	protected function waiting_for_background_update( $repo = null ) {
-		$caches = [];
-		if ( null !== $repo ) {
-			$cache = isset( $repo->slug ) ? $this->get_repo_cache( $repo->slug ) : null;
-
-			return empty( $cache );
-		}
-		$repos = array_merge(
-			Singleton::get_instance( 'Plugin', $this )->get_plugin_configs(),
-			Singleton::get_instance( 'Theme', $this )->get_theme_configs()
-		);
-		foreach ( $repos as $git_repo ) {
-			$caches[ $git_repo->slug ] = $this->get_repo_cache( $git_repo->slug );
-		}
-		$waiting = array_filter(
-			$caches,
-			function ( $e ) {
-				return empty( $e );
-			}
-		);
-
-		return ! empty( $waiting );
-	}
-
-	/**
 	 * Parse URI param returning array of parts.
 	 *
 	 * @param string $repo_header
@@ -366,7 +331,7 @@ trait GHU_Trait {
 		$header['scheme']     = isset( $header_parts['scheme'] ) ? $header_parts['scheme'] : null;
 		$header['host']       = isset( $header_parts['host'] ) ? $header_parts['host'] : null;
 		$header['owner']      = trim( $header_path['dirname'], '/' );
-		$header['repo']       = isset( $header_path['extension'] ) && 'git' === $header_path['extension'] ? $header_path['filename'] : $header_path['basename'];
+		$header['repo']       = $header_path['filename'];
 		$header['owner_repo'] = implode( '/', [ $header['owner'], $header['repo'] ] );
 		$header['base_uri']   = str_replace( $header_parts['path'], '', $repo_header );
 		$header['uri']        = isset( $header['scheme'] ) ? trim( $repo_header, '/' ) : null;
@@ -377,97 +342,15 @@ trait GHU_Trait {
 	}
 
 	/**
-	 * Create repo parts.
+	 * Take remote file contents as string or array and parse and reduce headers.
 	 *
-	 * @param string $repo
-	 * @param string $type plugin|theme.
+	 * @param string|array $contents File contents or array of file headers.
+	 * @param string       $type plugin|theme.
 	 *
-	 * @return mixed
+	 * @return array $all_headers Reduced array of all headers.
 	 */
-	protected function get_repo_parts( $repo, $type ) {
-		$extra_repo_headers = $this->get_class_vars( 'Base', 'extra_repo_headers' );
-
-		$arr['bool']    = false;
-		$pattern        = '/' . strtolower( $repo ) . '_/';
-		$type           = preg_replace( $pattern, '', $type );
-		$repo_types     = [
-			'GitHub'    => 'github_' . $type,
-			'Bitbucket' => 'bitbucket_' . $type,
-			'GitLab'    => 'gitlab_' . $type,
-			'Gitea'     => 'gitea_' . $type,
-		];
-		$repo_base_uris = [
-			'GitHub'    => 'https://github.com/',
-			'Bitbucket' => 'https://bitbucket.org/',
-			'GitLab'    => 'https://gitlab.com/',
-			'Gitea'     => '',
-		];
-
-		if ( array_key_exists( $repo, $repo_types ) ) {
-			$arr['type']       = $repo_types[ $repo ];
-			$arr['git_server'] = strtolower( $repo );
-			$arr['base_uri']   = $repo_base_uris[ $repo ];
-			$arr['bool']       = true;
-			foreach ( $extra_repo_headers as $key => $value ) {
-				$arr[ $key ] = $repo . ' ' . $value;
-			}
-		}
-
-		return $arr;
-	}
-
-	/**
-	 * Set array with normal repo names.
-	 * Fix name even if installed without renaming originally, eg <repo>-master
-	 *
-	 * @param string            $slug
-	 * @param Base|Plugin|Theme $upgrader_object
-	 *
-	 * @return array
-	 */
-	protected function get_repo_slugs( $slug, $upgrader_object = null ) {
-		$arr    = [];
-		$rename = explode( '-', $slug );
-		array_pop( $rename );
-		$rename = implode( '-', $rename );
-
-		if ( null === $upgrader_object ) {
-			$upgrader_object = $this;
-		}
-
-		$rename = isset( $upgrader_object->config[ $slug ] ) ? $slug : $rename;
-		$config = $this->get_class_vars( ( new \ReflectionClass( $upgrader_object ) )->getShortName(), 'config' );
-
-		foreach ( (array) $config as $repo ) {
-			// Check repo slug or directory name for match.
-			$slug_check = [
-				$repo->slug,
-				dirname( $repo->file ),
-			];
-
-			// Exact match.
-			if ( \in_array( $slug, $slug_check, true ) ) {
-				$arr['slug'] = $repo->slug;
-				break;
-			}
-
-			// Soft match, there may still be an exact $slug match.
-			if ( \in_array( $rename, $slug_check, true ) ) {
-				$arr['slug'] = $repo->slug;
-			}
-		}
-
-		return $arr;
-	}
-
-	/**
-	 * Get default headers plus extra headers.
-	 *
-	 * @param string $type plugin|theme.
-	 *
-	 * @return array
-	 */
-	public function get_headers( $type ) {
+	public function get_file_headers( $contents, $type ) {
+		$all_headers            = [];
 		$default_plugin_headers = [
 			'Name'        => 'Plugin Name',
 			'PluginURI'   => 'Plugin URI',
@@ -494,22 +377,17 @@ trait GHU_Trait {
 			'DomainPath'  => 'Domain Path',
 		];
 
-		$all_headers = array_merge( ${"default_{$type}_headers"}, self::$extra_headers );
+		if ( 'plugin' === $type ) {
+			$all_headers = $default_plugin_headers;
+		}
+		if ( 'theme' === $type ) {
+			$all_headers = $default_theme_headers;
+		}
 
-		return $all_headers;
-	}
-
-	/**
-	 * Take remote file contents as string or array and parse and reduce headers.
-	 *
-	 * @param string|array $contents File contents or array of file headers.
-	 * @param string       $type plugin|theme.
-	 *
-	 * @return array $all_headers Reduced array of all headers.
-	 */
-	public function get_file_headers( $contents, $type ) {
-		$all_headers = [];
-		$all_headers = $this->get_headers( $type );
+		/*
+		 * Merge extra headers and default headers.
+		 */
+		$all_headers = array_merge( self::$extra_headers, $all_headers );
 		$all_headers = array_unique( $all_headers );
 
 		/*
@@ -539,107 +417,4 @@ trait GHU_Trait {
 
 		return $all_headers;
 	}
-
-	/**
-	 * Parse Enterprise, Languages, Release Asset, and CI Job headers for plugins and themes.
-	 *
-	 * @param array           $header
-	 * @param array|\WP_Theme $headers
-	 * @param array           $header_parts
-	 * @param array           $repo_parts
-	 *
-	 * @return array $header
-	 */
-	public function parse_extra_headers( $header, $headers, $header_parts, $repo_parts ) {
-		$extra_repo_headers = $this->get_class_vars( 'Base', 'extra_repo_headers' );
-		$hosted_domains     = [ 'github.com', 'bitbucket.org', 'gitlab.com' ];
-		$theme              = null;
-
-		$header['enterprise_uri'] = null;
-		$header['enterprise_api'] = null;
-		$header['languages']      = null;
-		$header['ci_job']         = false;
-		$header['release_asset']  = false;
-
-		if ( ! empty( $header['host'] ) && ! in_array( $header['host'], $hosted_domains, true ) ) {
-			$header['enterprise_uri'] = $header['base_uri'];
-			$header['enterprise_api'] = trim( $header['enterprise_uri'], '/' );
-			switch ( $header_parts[0] ) {
-				case 'GitHub':
-					$header['enterprise_api'] .= '/api/v3';
-					break;
-				case 'GitLab':
-					$header['enterprise_api'] .= '/api/v4';
-					break;
-				case 'Bitbucket':
-					$header['enterprise_api'] .= '/rest/api';
-					break;
-			}
-		}
-
-		if ( $headers instanceof \WP_Theme ) {
-			$theme                    = $headers;
-			$headers                  = [];
-			$headers['Release Asset'] = '';
-			$header['release_asset']  = 'true' === $theme->get( 'Release Asset' );
-		}
-
-		$self_hosted_parts = array_keys( $extra_repo_headers );
-		foreach ( $self_hosted_parts as $part ) {
-			if ( $theme instanceof \WP_Theme ) {
-				$headers[ $repo_parts[ $part ] ] = $theme->get( $repo_parts[ $part ] );
-			}
-			if ( array_key_exists( $repo_parts[ $part ], $headers ) &&
-				! empty( $headers[ $repo_parts[ $part ] ] )
-			) {
-				switch ( $part ) {
-					case 'Languages':
-						$header['languages'] = $headers[ $repo_parts[ $part ] ];
-						break;
-					case 'CIJob':
-						$header['ci_job'] = $headers[ $repo_parts[ $part ] ];
-						break;
-				}
-			}
-		}
-		$header['release_asset'] = ! $header['release_asset'] && isset( $headers['Release Asset'] ) ? 'true' === $headers['Release Asset'] : $header['release_asset'];
-
-		return $header;
-	}
-
-	/**
-	 * Checks if dupicate wp-cron event exists.
-	 *
-	 * @param string $event Name of wp-cron event.
-	 *
-	 * @return bool
-	 */
-	public function is_duplicate_wp_cron_event( $event ) {
-		$cron = _get_cron_array();
-		foreach ( $cron as $timestamp => $cronhooks ) {
-			if ( key( $cronhooks ) === $event ) {
-				$this->is_cron_overdue( $cron, $timestamp );
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check to see if wp-cron event is overdue by 24 hours and report error message.
-	 *
-	 * @param array $cron
-	 * @param int   $timestamp
-	 */
-	public function is_cron_overdue( $cron, $timestamp ) {
-		$overdue = ( ( time() - $timestamp ) / HOUR_IN_SECONDS ) > 24;
-		if ( $overdue ) {
-			$error_msg = esc_html__( 'There may be a problem with WP-Cron. A GitHub Updater WP-Cron event is overdue.', 'github-updater' );
-			$error     = new \WP_Error( 'github_updater_cron_error', $error_msg );
-			Singleton::get_instance( 'Messages', $this )->create_error_message( $error );
-		}
-	}
-
 }

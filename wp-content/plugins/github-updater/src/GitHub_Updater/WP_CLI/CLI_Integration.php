@@ -249,7 +249,7 @@ class CLI_Plugin_Installer_Skin extends \Plugin_Installer_Skin {
 		}
 	}
 
-	public function feedback( $string, ...$args ) {
+	public function feedback( $string ) {
 	}
 }
 
@@ -269,6 +269,6 @@ class CLI_Theme_Installer_Skin extends \Theme_Installer_Skin {
 		}
 	}
 
-	public function feedback( $string, ...$args ) {
+	public function feedback( $string ) {
 	}
 }

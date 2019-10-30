@@ -11,7 +11,6 @@
 namespace Fragen\GitHub_Updater;
 
 use Fragen\Singleton;
-use Fragen\GitHub_Updater\Traits\GHU_Trait;
 
 /*
  * Exit if called directly.
@@ -31,41 +30,11 @@ if ( ! defined( 'WPINC' ) ) {
  * @author    UCF Web Communications
  * @link      https://github.com/UCF/Theme-Updater
  */
-class Theme {
-	use GHU_Trait;
-
-	/**
-	 * Holds Class Base object.
-	 *
-	 * @var Base
-	 */
-	protected $base;
-
-	/**
-	 * Hold config array.
-	 *
-	 * @var array
-	 */
-	private $config;
-
-	/**
-	 * Holds extra headers.
-	 *
-	 * @var array
-	 */
-	private static $extra_headers;
-
-	/**
-	 * Holds options.
-	 *
-	 * @var array
-	 */
-	private static $options;
-
+class Theme extends Base {
 	/**
 	 * Rollback variable.
 	 *
-	 * @var string|bool
+	 * @var number
 	 */
 	protected $tag = false;
 
@@ -73,9 +42,7 @@ class Theme {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->base          = Singleton::get_instance( 'Base', $this );
-		self::$extra_headers = $this->get_class_vars( 'Base', 'extra_headers' );
-		self::$options       = $this->get_class_vars( 'Base', 'options' );
+		parent::__construct();
 		$this->load_options();
 
 		// Get details of installed git sourced themes.
@@ -108,7 +75,7 @@ class Theme {
 	}
 
 	/**
-	 * Get details of Git-sourced themes from those that are installed.
+	 * Reads in WP_Theme class of each theme.
 	 * Populates variable array.
 	 *
 	 * @return array Indexed array of associative arrays of theme details.
@@ -117,29 +84,6 @@ class Theme {
 		$this->delete_current_theme_cache();
 		$git_themes = [];
 		$themes     = wp_get_themes( [ 'errors' => null ] );
-
-		$paths = array_map(
-			function( $theme ) {
-				return "$theme->theme_root/$theme->stylesheet/style.css";
-			},
-			$themes
-		);
-
-		foreach ( $paths as $slug => $path ) {
-			$all_headers        = $this->get_headers( 'theme' );
-			$repos_arr[ $slug ] = get_file_data( $path, $all_headers );
-		}
-
-		$themes = array_filter(
-			$repos_arr,
-			function( $repo ) {
-				foreach ( $repo as $key => $value ) {
-					if ( in_array( $key, array_keys( self::$extra_headers ), true ) && false !== stripos( $key, 'theme' ) && ! empty( $value ) ) {
-						return $this->get_file_headers( $repo, 'theme' );
-					}
-				}
-			}
-		);
 
 		/**
 		 * Filter to add themes not containing appropriate header line.
@@ -153,58 +97,74 @@ class Theme {
 		 * @param         string        'theme'    Type being passed.
 		 */
 		$additions = apply_filters( 'github_updater_additions', null, $themes, 'theme' );
-		$themes    = array_merge( $themes, (array) $additions );
 
 		foreach ( (array) $themes as $theme ) {
 			$git_theme = [];
-			$header    = null;
-			$key       = array_filter(
-				array_keys( $theme ),
-				function( $key ) use ( $theme ) {
-					if ( false !== stripos( $key, 'themeuri' ) && ! empty( $theme[ $key ] ) & 'ThemeURI' !== $key ) {
-						return $key;
+
+			foreach ( (array) static::$extra_headers as $value ) {
+				$header   = null;
+				$repo_uri = $theme->get( $value );
+
+				/**
+				 * Get $repo_uri from themes added to GitHub Updater via hook.
+				 */
+				foreach ( (array) $additions as $addition ) {
+					if ( $theme->stylesheet === $addition['slug'] ) {
+						if ( ! empty( $addition[ $value ] ) ) {
+							$repo_uri = $addition[ $value ];
+							break;
+						}
 					}
 				}
-			);
 
-			$key = array_pop( $key );
-			if ( null === $key ) {
+				if ( empty( $repo_uri ) || false === stripos( $value, 'Theme' ) ) {
+					continue;
+				}
+
+				$header_parts = explode( ' ', $value );
+				$repo_parts   = $this->get_repo_parts( $header_parts[0], 'theme' );
+
+				if ( $repo_parts['bool'] ) {
+					$header = $this->parse_header_uri( $repo_uri );
+					if ( empty( $header ) || $theme->stylesheet !== $header['repo'] ) {
+						continue;
+					}
+				}
+
+				$header         = $this->parse_extra_headers( $header, $theme, $header_parts, $repo_parts );
+				$current_branch = "current_branch_{$header['repo']}";
+				$branch         = isset( static::$options[ $current_branch ] )
+					? static::$options[ $current_branch ]
+					: false;
+
+				$git_theme['type']                    = 'theme';
+				$git_theme['git']                     = $repo_parts['git_server'];
+				$git_theme['uri']                     = "{$header['base_uri']}/{$header['owner_repo']}";
+				$git_theme['enterprise']              = $header['enterprise_uri'];
+				$git_theme['enterprise_api']          = $header['enterprise_api'];
+				$git_theme['owner']                   = $header['owner'];
+				$git_theme['slug']                    = $header['repo'];
+				$git_theme['file']                    = "{$header['repo']}/style.css";
+				$git_theme['name']                    = $theme->get( 'Name' );
+				$git_theme['theme_uri']               = $theme->get( 'ThemeURI' );
+				$git_theme['homepage']                = $theme->get( 'ThemeURI' );
+				$git_theme['author']                  = $theme->get( 'Author' );
+				$git_theme['local_version']           = strtolower( $theme->get( 'Version' ) );
+				$git_theme['sections']['description'] = $theme->get( 'Description' );
+				$git_theme['local_path']              = get_theme_root() . '/' . $git_theme['slug'] . '/';
+				$git_theme['branch']                  = $branch ?: 'master';
+				$git_theme['languages']               = $header['languages'];
+				$git_theme['ci_job']                  = $header['ci_job'];
+				$git_theme['release_asset']           = $header['release_asset'];
+				$git_theme['broken']                  = ( empty( $header['owner'] ) || empty( $header['repo'] ) );
+
+				break;
+			}
+
+			// Exit if not git hosted theme.
+			if ( empty( $git_theme ) ) {
 				continue;
 			}
-			$repo_uri = $theme[ $key ];
-
-			$header_parts = explode( ' ', self::$extra_headers[ $key ] );
-			$repo_parts   = $this->get_repo_parts( $header_parts[0], 'theme' );
-
-			if ( $repo_parts['bool'] ) {
-				$header = $this->parse_header_uri( $repo_uri );
-			}
-
-			$header                               = $this->parse_extra_headers( $header, $theme, $header_parts, $repo_parts );
-			$current_branch                       = "current_branch_{$header['repo']}";
-			$branch                               = isset( self::$options[ $current_branch ] )
-				? self::$options[ $current_branch ]
-				: false;
-			$git_theme['type']                    = 'theme';
-			$git_theme['git']                     = $repo_parts['git_server'];
-			$git_theme['uri']                     = "{$header['base_uri']}/{$header['owner_repo']}";
-			$git_theme['enterprise']              = $header['enterprise_uri'];
-			$git_theme['enterprise_api']          = $header['enterprise_api'];
-			$git_theme['owner']                   = $header['owner'];
-			$git_theme['slug']                    = $header['repo'];
-			$git_theme['file']                    = "{$header['repo']}/style.css";
-			$git_theme['name']                    = $theme['Name'];
-			$git_theme['theme_uri']               = $theme['ThemeURI'];
-			$git_theme['homepage']                = $theme['ThemeURI'];
-			$git_theme['author']                  = $theme['Author'];
-			$git_theme['local_version']           = strtolower( $theme['Version'] );
-			$git_theme['sections']['description'] = $theme['Description'];
-			$git_theme['local_path']              = get_theme_root() . '/' . $git_theme['slug'] . '/';
-			$git_theme['branch']                  = $branch ?: 'master';
-			$git_theme['languages']               = $header['languages'];
-			$git_theme['ci_job']                  = $header['ci_job'];
-			$git_theme['release_asset']           = $header['release_asset'];
-			$git_theme['broken']                  = ( empty( $header['owner'] ) || empty( $header['repo'] ) );
 
 			$git_themes[ $git_theme['slug'] ] = (object) $git_theme;
 		}
@@ -230,7 +190,7 @@ class Theme {
 			if ( ! $this->waiting_for_background_update( $theme ) || static::is_wp_cli()
 				|| apply_filters( 'github_updater_disable_wpcron', false )
 			) {
-				$this->base->get_remote_repo_meta( $theme );
+				$this->get_remote_repo_meta( $theme );
 			} else {
 				$themes[ $theme->slug ] = $theme;
 			}
@@ -359,10 +319,10 @@ class Theme {
 			)
 		);
 		$nonced_update_url = wp_nonce_url(
-			$this->base->get_update_url( 'theme', 'upgrade-theme', $theme_key ),
+			$this->get_update_url( 'theme', 'upgrade-theme', $theme_key ),
 			'upgrade-theme_' . $theme_key
 		);
-		$enclosure         = $this->base->update_row_enclosure( $theme_key, 'theme' );
+		$enclosure         = $this->update_row_enclosure( $theme_key, 'theme' );
 
 		if ( isset( $current->response[ $theme_key ] ) ) {
 			$response = $current->response[ $theme_key ];
@@ -416,17 +376,17 @@ class Theme {
 	 * @return bool
 	 */
 	public function multisite_branch_switcher( $theme_key, $theme ) {
-		if ( empty( self::$options['branch_switch'] ) ) {
+		if ( empty( static::$options['branch_switch'] ) ) {
 			return false;
 		}
 
-		$enclosure         = $this->base->update_row_enclosure( $theme_key, 'theme', true );
+		$enclosure         = $this->update_row_enclosure( $theme_key, 'theme', true );
 		$id                = $theme_key . '-id';
 		$branches          = isset( $this->config[ $theme_key ]->branches )
 			? $this->config[ $theme_key ]->branches
 			: null;
 		$nonced_update_url = wp_nonce_url(
-			$this->base->get_update_url( 'theme', 'upgrade-theme', $theme_key ),
+			$this->get_update_url( 'theme', 'upgrade-theme', $theme_key ),
 			'upgrade-theme_' . $theme_key
 		);
 
@@ -445,7 +405,7 @@ class Theme {
 		 * Create after_theme_row_
 		 */
 		echo $enclosure['open'];
-		$this->base->make_branch_switch_row( $branch_switch_data, $this->config );
+		$this->make_branch_switch_row( $branch_switch_data );
 		echo $enclosure['close'];
 
 		return true;
@@ -460,10 +420,9 @@ class Theme {
 	 * @param array  $theme
 	 */
 	public function remove_after_theme_row( $theme_key, $theme ) {
-		$themes      = $this->get_theme_configs();
-		$git_servers = $this->get_class_vars( 'Base', 'git_servers' );
+		$themes = $this->get_theme_configs();
 
-		foreach ( $git_servers as $server ) {
+		foreach ( static::$git_servers as $server ) {
 			$repo_header = $server . ' Theme URI';
 			$repo_uri    = $theme->get( $repo_header );
 
@@ -550,7 +509,7 @@ class Theme {
 			)
 		);
 		$nonced_update_url = wp_nonce_url(
-			$this->base->get_update_url( 'theme', 'upgrade-theme', $theme->slug ),
+			$this->get_update_url( 'theme', 'upgrade-theme', $theme->slug ),
 			'upgrade-theme_' . $theme->slug
 		);
 
@@ -606,17 +565,17 @@ class Theme {
 	 */
 	protected function single_install_switcher( $theme ) {
 		$nonced_update_url = wp_nonce_url(
-			$this->base->get_update_url( 'theme', 'upgrade-theme', $theme->slug ),
+			$this->get_update_url( 'theme', 'upgrade-theme', $theme->slug ),
 			'upgrade-theme_' . $theme->slug
 		);
 		$rollback_url      = sprintf( '%s%s', $nonced_update_url, '&rollback=' );
 
-		if ( ! isset( self::$options['branch_switch'] ) ) {
+		if ( ! isset( static::$options['branch_switch'] ) ) {
 			return;
 		}
 
 		ob_start();
-		if ( '1' === self::$options['branch_switch'] ) {
+		if ( '1' === static::$options['branch_switch'] ) {
 			printf(
 				/* translators: 1: branch name, 2: jQuery dropdown, 3: closing tag */
 				'<p>' . esc_html__( 'Current branch is `%1$s`, try %2$sanother version%3$s', 'github-updater' ),
@@ -708,7 +667,7 @@ class Theme {
 			// Set transient for rollback.
 			if ( isset( $_GET['theme'], $_GET['rollback'] ) && $theme->slug === $_GET['theme']
 			) {
-				$transient->response[ $theme->slug ] = $this->base->set_rollback_transient( 'theme', $theme );
+				$transient->response[ $theme->slug ] = $this->set_rollback_transient( 'theme', $theme );
 			}
 		}
 
