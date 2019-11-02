@@ -1,0 +1,88 @@
+Log created: 2019-11-02 15:32:48
+Type: backup
+[2019-11-02 15:32:50][notice]Start backing up.
+[2019-11-02 15:32:50][notice]server info fcgi:Off max execution time: 900 wp version:5.2.4 php version:7.2.18 db version:5.7.26 php ini:safe_mode: memory_limit:256M memory_get_usage:6.04 MB memory_get_peak_usage:6.12 MB extensions:PDO enabled curl enabled zlib enabled   is_multisite:0
+[2019-11-02 15:32:50][notice]Prepare to backup backup_db files.
+[2019-11-02 15:32:50][notice]Start exporting database.
+[2019-11-02 15:32:50][notice]max_allowed_packet less than 32M :1.00 MB
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_commentmeta
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_comments
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_links
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_litespeed_img_optm
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_litespeed_optimizer
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_options
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_postmeta
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_posts
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_sfm_redirects
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_simply_static_pages
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_term_relationships
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_term_taxonomy
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_termmeta
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_terms
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_usermeta
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_users
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_wpfm_backup
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_yoast_seo_links
+[2019-11-02 15:32:50][notice]Preparing to dump table wp_yoast_seo_meta
+[2019-11-02 15:32:50][notice]Exporting database finished.
+[2019-11-02 15:32:50][notice]Start compressing backup_db
+[2019-11-02 15:32:50][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_db.zip
+[2019-11-02 15:32:50][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_db.zip, filesize: 2.11 MB
+[2019-11-02 15:32:50][notice]Compressing backup_db completed
+[2019-11-02 15:32:50][notice]Backing up backup_db completed.
+[2019-11-02 15:32:50][notice]Prepare to backup backup_themes files.
+[2019-11-02 15:32:50][notice]File number: 1130
+[2019-11-02 15:32:50][notice]Start compressing backup_themes
+[2019-11-02 15:32:50][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_themes.zip
+[2019-11-02 15:32:58][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_themes.zip, filesize: 32.49 MB
+[2019-11-02 15:32:58][notice]Compressing backup_themes completed
+[2019-11-02 15:32:58][notice]Backing up backup_themes completed.
+[2019-11-02 15:32:58][notice]Prepare to backup backup_plugin files.
+[2019-11-02 15:32:58][notice]File number: 2408
+[2019-11-02 15:32:58][notice]Start compressing backup_plugin
+[2019-11-02 15:32:58][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_plugin.zip
+[2019-11-02 15:33:12][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_plugin.zip, filesize: 26.97 MB
+[2019-11-02 15:33:12][notice]Compressing backup_plugin completed
+[2019-11-02 15:33:12][notice]Backing up backup_plugin completed.
+[2019-11-02 15:33:12][notice]Prepare to backup backup_uploads files.
+[2019-11-02 15:33:12][notice]File number: 166
+[2019-11-02 15:33:12][notice]Start compressing backup_uploads
+[2019-11-02 15:33:12][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_uploads.zip
+[2019-11-02 15:33:16][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_uploads.zip, filesize: 16.01 MB
+[2019-11-02 15:33:16][notice]Compressing backup_uploads completed
+[2019-11-02 15:33:16][notice]Backing up backup_uploads completed.
+[2019-11-02 15:33:16][notice]Prepare to backup backup_content files.
+[2019-11-02 15:33:16][notice]File number: 2
+[2019-11-02 15:33:16][notice]Start compressing backup_content
+[2019-11-02 15:33:16][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_content.zip
+[2019-11-02 15:33:16][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_content.zip, filesize: 541.00 B
+[2019-11-02 15:33:16][notice]Compressing backup_content completed
+[2019-11-02 15:33:16][notice]Backing up backup_content completed.
+[2019-11-02 15:33:16][notice]Prepare to backup backup_core files.
+[2019-11-02 15:33:16][notice]File number: 1631
+[2019-11-02 15:33:16][notice]Start compressing backup_core
+[2019-11-02 15:33:16][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_core.zip
+[2019-11-02 15:33:34][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_core.zip, filesize: 38.09 MB
+[2019-11-02 15:33:34][notice]Compressing backup_core completed
+[2019-11-02 15:33:34][notice]Backing up backup_core completed.
+[2019-11-02 15:33:34][notice]Prepare to backup backup_merge files.
+[2019-11-02 15:33:34][notice]File number: 6
+[2019-11-02 15:33:34][notice]Start compressing backup_merge
+[2019-11-02 15:33:34][notice]Prepare to zip files. file: localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_all.zip
+[2019-11-02 15:33:40][notice]Adding zip files completed.localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_all.zip, filesize: 53.17 MB
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_db.zip
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_themes.zip
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_plugin.zip
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_uploads.zip
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_content.zip
+[2019-11-02 15:33:40][notice]Cleaned up file, filename: C:\wamp64\www\Gameroks/wp-content\wpvividbackups\localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_core.zip
+[2019-11-02 15:33:40][notice]Compressing backup_merge completed
+[2019-11-02 15:33:40][notice]Backing up backup_merge completed.
+[2019-11-02 15:33:40][notice]Backup completed.
+[2019-11-02 15:33:40][notice]Backup succeeded.
+[2019-11-02 15:33:40][notice]Start upload.
+[2019-11-02 15:33:40][notice]Start uploading localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_all.zip
+[2019-11-02 15:33:40][notice]Creating upload session.
+[2019-11-02 15:33:40][notice]Uploading localhost_Gameroks_wpvivid-5dbda1a0a4e0b_2019-11-02-15-32_backup_all.zip failed.
+[2019-11-02 15:33:40][error]Uploading the file ends with an error SSL certificate problem: unable to get local issuer certificate
+[2019-11-02 15:33:40][error]SSL certificate problem: unable to get local issuer certificate
