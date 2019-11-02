@@ -1,0 +1,487 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MH Cicero lite v1.1.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-18 08:24+0000\n"
+"PO-Revision-Date: 2018-05-18 10:24+0200\n"
+"Last-Translator: Michael <info@mhthemes.com>\n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.0.1\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"X-Loco-Target-Locale: de_DE\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ mh-cicero-lite
+#: functions.php:35
+msgid "Main Navigation"
+msgstr "Hauptnavigation"
+
+# @ mh-cicero-lite
+#: functions.php:69 includes/mh-customizer.php:79
+msgid "Sidebar"
+msgstr "Sidebar"
+
+# @ mh-cicero-lite
+#: functions.php:69
+msgid "Sidebar on Posts/Pages."
+msgstr "Sidebar auf Artikel- und Seitenebene."
+
+# @ mh-cicero-lite
+#: content-none.php:4
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with "
+"different keywords."
+msgstr ""
+"Es konnten keine passenden Inhalte gefunden werden. Bitte versuchen Sie es "
+"erneut mit einem anderen Suchbegriff."
+
+# @ mh-cicero-lite
+#: content-none.php:6
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+"Es konnten keine passenden Inhalte gefunden werden. Vielleicht kann Ihnen "
+"die Suchfunktion weiterhelfen."
+
+#. Name of the template
+msgid "Page - Full Width"
+msgstr "Seite - Full Width"
+
+# @ mh-cicero-lite
+#: comments.php:7
+msgid "No Comments, Be The First!"
+msgstr "Hinterlassen Sie den ersten Kommentar"
+
+# @ mh-cicero-lite
+#: comments.php:7
+msgid "1 Comment"
+msgstr "1 Kommentar"
+
+# @ mh-cicero-lite
+#: comments.php:7
+msgid "% Comments"
+msgstr "% Kommentare"
+
+# @ mh-cicero-lite
+#: comments.php:15 includes/mh-custom-functions.php:117
+#: includes/mh-custom-functions.php:134
+msgid "&laquo;"
+msgstr "&laquo;"
+
+# @ mh-cicero-lite
+#: comments.php:15 includes/mh-custom-functions.php:118
+#: includes/mh-custom-functions.php:134
+msgid "&raquo;"
+msgstr "&raquo;"
+
+# @ mh-cicero-lite
+#: comments.php:19
+msgid "Comments are closed."
+msgstr "Kommentare sind deaktiviert."
+
+# @ mh-cicero-lite
+#: comments.php:32
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr "Hinterlasse eine Antwort zu %s"
+
+# @ mh-cicero-lite
+#: comments.php:33
+msgid "Your email address will not be published."
+msgstr "E-Mail Adresse wird nicht ver&ouml;ffentlicht."
+
+# @ mh-cicero-lite
+#: comments.php:36
+msgid "Send Comment"
+msgstr "Kommentar senden"
+
+# @ mh-cicero-lite
+#: comments.php:37
+msgid "Enter Message Here"
+msgstr "Kommentar eingeben"
+
+# @ mh-cicero-lite
+#: comments.php:39
+msgid "Enter Name"
+msgstr "Namen eingeben"
+
+# @ mh-cicero-lite
+#: comments.php:40
+msgid "Enter Email"
+msgstr "E-Mail Adresse eingeben"
+
+# @ mh-cicero-lite
+#: comments.php:41
+msgid "Enter URL"
+msgstr "URL eingeben"
+
+#: comments.php:42
+msgid ""
+"Save my name, email, and website in this browser for the next time I comment."
+msgstr ""
+"Meinen Namen, E-Mail und Website in diesem Browser speichern, bis ich wieder "
+"kommentiere."
+
+# @ mh-cicero-lite
+#: footer.php:3
+#, php-format
+msgid "Copyright &copy; %1$s | MH Cicero <em>lite</em> by %2$s"
+msgstr "Copyright &copy; %1$s | MH Cicero <em>lite</em> von %2$s"
+
+# @ mh-cicero-lite
+#: template-authorbox.php:7
+#, php-format
+msgid "About %s"
+msgstr "&Uuml;ber %s"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:17
+#, php-format
+msgctxt "post author"
+msgid "Articles by %s"
+msgstr "Artikel von %s"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:29
+msgid "Archives"
+msgstr "Archive"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:35
+msgid "Page not found (404)"
+msgstr "Seite nicht gefunden (404)"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:37
+#, php-format
+msgid "Search Results for %s"
+msgstr "Suchergebnisse f&uuml;r %s"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:55
+#, php-format
+msgctxt "comments number"
+msgid "1 Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] "1 Kommentar"
+msgstr[1] "%1$s Kommentare"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:164
+msgid "Back to post"
+msgstr "Zur&uuml;ck zum Artikel"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:166
+msgid "Previous image"
+msgstr "Vorheriges Bild"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:169
+msgid "Previous post"
+msgstr "Vorheriger Artikel"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:174
+msgid "Next image"
+msgstr "N&auml;chstes Bild"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:176
+msgid "Next post"
+msgstr "N&auml;chster Artikel"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:194
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s um %2$s"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:195
+msgid "(Edit)"
+msgstr "(Bearbeiten)"
+
+# @ mh-cicero-lite
+#: includes/mh-custom-functions.php:198
+msgid "Your comment is awaiting moderation."
+msgstr "Der Kommentar wartet auf Freischaltung."
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:13 admin/admin.php:78
+msgid "MH Cicero Pro"
+msgstr "MH Cicero Pro"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:16 admin/admin.php:81
+msgid ""
+"If you like the free version of this theme, you will LOVE the full version "
+"of MH Cicero which includes unique custom widgets, additional features and "
+"more useful options to customize your website."
+msgstr ""
+"Falls Sie dieses kostenlose Theme m&ouml;gen, so werden Sie die Vollversion "
+"von MH Cicero mit den zus&auml;tzlichen Custom Widgets, Features und "
+"Optionen lieben, um damit Ihre Webseite flexibel aufzusetzen."
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:19
+msgid "Additional Features:"
+msgstr "Zus&auml;tzliche Features:"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:23
+msgid "Options to modify color scheme"
+msgstr "Optionen um das Farbschema anzupassen"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:26
+msgid "Typography options"
+msgstr "Typographie Optionen"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:29
+msgid "Additional custom widgets"
+msgstr "Zus&auml;tzliche Custom Widgets"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:32
+msgid "Social buttons, related articles, and more..."
+msgstr "Social Buttons, &Auml;hnliche Artikel, und mehr…"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:37 admin/admin.php:85
+msgid "Upgrade to MH Cicero Pro"
+msgstr "Upgrade auf MH Cicero Pro"
+
+#: includes/mh-customizer.php:42 admin/admin.php:36
+msgid "MH Themes Showcase"
+msgstr "MH Themes Showcase"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:47 admin/admin.php:52
+msgid "Theme Documentation"
+msgstr "Theme Dokumentation"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:52 admin/admin.php:33
+msgid "Support Forum"
+msgstr "Support Forum"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:60 admin/admin.php:65
+msgid "Theme Options"
+msgstr "Theme Optionen"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:64
+msgid "General"
+msgstr "Allgemein"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:65
+msgid "Layout"
+msgstr "Layout"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:66
+msgid "More Features"
+msgstr "Weitere Features"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:71 includes/mh-customizer.php:120
+msgid "Read More"
+msgstr "Weiterlesen"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:77
+msgid "Custom Excerpt Length in Words"
+msgstr "L&auml;nge der Textausz&uuml;ge in Worten"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:78
+msgid "Custom Excerpt More-Text"
+msgstr "Beliebiger More-Text"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:79 includes/mh-customizer.php:94
+msgid "Right Sidebar"
+msgstr "Rechte Sidebar"
+
+# @ mh-cicero-lite
+#: includes/mh-customizer.php:79 includes/mh-customizer.php:95
+msgid "Left Sidebar"
+msgstr "Linke Sidebar"
+
+# @ mh-cicero-lite
+#: admin/admin.php:7
+msgid "Welcome to MH Cicero lite"
+msgstr "Willkommen zu MH Cicero lite"
+
+# @ mh-cicero-lite
+#: admin/admin.php:7
+msgid "Theme Info"
+msgstr "Theme Info"
+
+# @ mh-cicero-lite
+#: admin/admin.php:17
+#, php-format
+msgid "Welcome to %1s %2s"
+msgstr "Willkommen zu %1s %2s"
+
+# @ mh-cicero-lite
+#: admin/admin.php:25
+msgid "Important Links:"
+msgstr "Wichtige Links:"
+
+# @ mh-cicero-lite
+#: admin/admin.php:27
+msgid "Theme Info Page"
+msgstr "Theme Info Seite"
+
+# @ mh-cicero-lite
+#: admin/admin.php:30
+msgid "Support Center"
+msgstr "Support Center"
+
+# @ mh-cicero-lite
+#: admin/admin.php:39 admin/admin.php:101
+msgid "Rate this theme"
+msgstr "Theme bewerten"
+
+# @ mh-cicero-lite
+#: admin/admin.php:46
+#, php-format
+msgid "Getting Started with %s"
+msgstr "Erste Schritte mit %s"
+
+# @ mh-cicero-lite
+#: admin/admin.php:55
+#, php-format
+msgid ""
+"Need any help with configuring %s? The documentation for this theme includes "
+"all theme related information that is needed to get your site up and running "
+"in no time. In case you have any additional questions, feel free to reach "
+"out in the theme support forums on WordPress.org."
+msgstr ""
+"Ben&ouml;tigen Sie Hilfe bei der Einrichtung von %s? In der Dokumentation "
+"f&uuml;r dieses Theme finden Sie alle theme-relevanten Informationen um "
+"dieses WordPress Theme kinderleicht einzurichten. Falls Sie Fragen haben, so "
+"erhalten Sie Hilfe im Theme Support Forum auf WordPress.org."
+
+# @ mh-cicero-lite
+#: admin/admin.php:59
+msgid "Visit Documentation"
+msgstr "Theme Dokumentation"
+
+# @ mh-cicero-lite
+#: admin/admin.php:68
+#, php-format
+msgid ""
+"%s supports the Theme Customizer for all theme settings. Click \"Customize "
+"Theme\" to open the Customizer now."
+msgstr ""
+"%s unterst&uuml;tzt den Theme Customizer f&uuml;r alle Optionen. Klicken Sie "
+"\"Theme anpassen\" um den Customizer zu &ouml;ffnen."
+
+# @ mh-cicero-lite
+#: admin/admin.php:72
+msgid "Customize Theme"
+msgstr "Theme anpassen"
+
+# @ mh-cicero-lite
+#: admin/admin.php:97
+#, php-format
+msgid "%1s is proudly brought to you by %2s. If you like %3s: %4s."
+msgstr "%1s wurde entwickelt von %2s. Falls Sie %3s m&ouml;gen: %4s."
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:8
+msgctxt "widget name"
+msgid "MH Custom Posts (lite)"
+msgstr "MH Custom Posts (lite)"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:11
+msgid "MH Custom Posts Widget to display posts in your sidebar."
+msgstr "MH Custom Posts Widget um Artikel in der Sidebar anzuzeigen."
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:54
+msgid "Title:"
+msgstr "Titel:"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:58
+msgid "Select a Category:"
+msgstr "Kategorie w&auml;hlen:"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:60
+msgid "All"
+msgstr "Alle"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:73
+msgid "Limit Post Number:"
+msgstr "Anzahl Artikel:"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:78
+msgid "Ignore Sticky Posts"
+msgstr "Sticky Posts ignorieren"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:81
+msgid "Info:"
+msgstr "Info:"
+
+# @ mh-cicero-lite
+#: includes/widgets/mh-custom-posts.php:81
+msgid ""
+"This is the lite version of this widget with basic features. If you need "
+"more professional features and options, you can upgrade to the premium "
+"version of this theme."
+msgstr ""
+"Dies ist die Lite Version dieses Widgets mit abgespecktem Funktionsumfang. "
+"Falls Sie erweiterte Optionen und einen gr&ouml;&szlig;eren Funktionsumfang "
+"ben&ouml;tigen, so k&ouml;nnen Sie auf die Premium Version upgraden."
+
+#. Name of the theme
+msgid "MH Cicero lite"
+msgstr "MH Cicero lite"
+
+#. Description of the theme
+msgid ""
+"This is the free version of MH Cicero WordPress Theme. MH Cicero lite is "
+"ideal for creative blogs and offers a beautiful flat design. This modern "
+"blog WordPress theme is 100% responsive and you can create up-to-date and "
+"appealing websites. You may present your content in a casual and simple, but "
+"yet beautiful and attractive way. In case you need more features and options "
+"to customize your website, you can upgrade to the premium version of MH "
+"Cicero."
+msgstr ""
+
+#. URI of the theme
+msgid "https://www.mhthemes.com/themes/mh/cicero-lite/"
+msgstr "https://www.mhthemes.com/themes/mh/cicero-lite/"
+
+#. Author of the theme
+msgid "MH Themes"
+msgstr "MH Themes"
+
+#. Author URI of the theme
+msgid "https://www.mhthemes.com/"
+msgstr "https://www.mhthemes.com/"

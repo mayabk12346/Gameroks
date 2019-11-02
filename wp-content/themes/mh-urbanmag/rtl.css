@@ -1,0 +1,8 @@
+/***** Stylesheet to support RTL languages *****/
+
+blockquote { border-right: 5px solid #90a859; border-left: none; }
+.mh-widget-title { padding: 10px 15px 10px 25px; border-right: 10px solid #90a859; border-left: none; }
+.mh-footer-widget-title { padding: 0 0 5px; border-right: none; }
+.mh-slider-caption { bottom: 25px; right: 25px; left: 25px; }
+.mh-slider-widget .flex-control-nav { left: 15px; right: auto; }
+.mh-widget-col-1 .flex-control-nav, .mh-widget-col-2 .flex-control-nav { left: 10px; right: auto; }
